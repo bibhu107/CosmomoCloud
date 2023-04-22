@@ -1,0 +1,15 @@
+ORGNIZATIONS_ID_ACCESS_LEVEL_KEY = 'organization_access'
+USERS_ID_KEY = 'users_id'
+ACCESS_LEVEL_ID_KEY = 'access_level'
+ORGANIZATIONS_ID_KEY = 'organizations_id'
+UPDATE_PERMISSION_ERROR_MSG = "Failed to update permission"
+HTTP_STATUS_CODE_NOT_FOUND = 404
+STATUS_CODE_INTERNAL_SERVER_ERROR = 500
+DB_ID_KEY = '_id'
+ID = 'id'
+USER_NOT_FOUND = "User not found"
+ORGANIZATION_NOT_FOUND = "User not found"
+MISSING_RECORD_FAILED_TO_UPDATE = "As record is missing , can't update"
+MISSING_RECORD_FAILED_TO_DELETE = "As record is missing , can't Delete"
+USER_MISSING_FROM_ORG = "User not found in the organization"
+DUPLICATE_ORGANIZATION = "Organization name is already take"

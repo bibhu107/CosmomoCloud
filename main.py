@@ -1,9 +1,8 @@
 from fastapi import FastAPI
 
-app = FastAPI()
+from src.routers import user, organization
 
-# Importing routes for users and organizations
-from routes import user, organization
+app = FastAPI()
 
 # Including routes
 app.include_router(user.router)

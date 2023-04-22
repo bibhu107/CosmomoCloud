@@ -1,35 +1,46 @@
-from fastapi import APIRouter, Depends, HTTPException
-from pymongo import MongoClient
-from bson import ObjectId
-from typing import List, Optional
+from typing import List, Optional, Union, Dict
 
-from schemas.organization import Organization, OrganizationCreate
-from crud.organization import create_organization, get_organization_by_id, get_organizations
+from fastapi import APIRouter
 
-router = APIRouter()
+from src.models.organization import Organization, OrganizationCreate
+from src.models.user import User
+from src.services.organization import add_user_to_org_db, delete_user_permission, \
+    delete_user_from_organization, create_new_org_store_in_db, list_organizations_with_paging, get_organization_from_db, \
+    update_user_permissions_db
 
-client = MongoClient("mongodb://localhost:27017/")
-db = client["mydatabase"]
-collection = db["organizations"]
+router = APIRouter(prefix="/organizations")
 
-@router.post("/organizations", response_model=Organization)
+
+@router.post("/", response_model=Organization)
 def create_new_organization(org: OrganizationCreate):
-    db_org = dict(org)
-    result = collection.insert_one(db_org)
-    db_org["_id"] = str(result.inserted_id)
-    return db_org
+    return create_new_org_store_in_db(org);
 
-@router.get("/organizations", response_model=List[Organization])
+
+@router.get("/", response_model=Dict[str, Union[int, List[Organization]]])
 def list_organizations(name: Optional[str] = None, limit: int = 10, offset: int = 0):
-    query = {}
-    if name:
-        query["name"] = name
-    organizations = collection.find(query).skip(offset).limit(limit)
-    return list(organizations)
+    return list_organizations_with_paging(name, limit, offset)
 
-@router.get("/organizations/{org_id}", response_model=Organization)
+
+@router.get("/{org_id}", response_model=Organization)
 def get_organization(org_id: str):
-    organization = collection.find_one({"_id": ObjectId(org_id)})
-    if not organization:
-        raise HTTPException(status_code=404, detail="Organization not found")
-    return organization
+    return get_organization_from_db(org_id)
+
+
+@router.post("/{org_id}/users", response_model=User)
+def add_user_to_org(org_id: str, user_id: str, access_level: str):
+    return add_user_to_org_db(org_id, user_id, access_level)
+
+
+@router.post("/{org_id}/users/{user_id}/permissions", response_model=User)
+def update_user_permissions(org_id: str, user_id: str, access_level: str):
+    return update_user_permissions_db(org_id, user_id, access_level)
+
+
+@router.delete("/{org_id}/users/{user_id}/permissions", response_model=User)
+def remove_user_permissions(org_id: str, user_id: str):
+    return delete_user_permission(org_id, user_id)
+
+
+@router.delete("/{org_id}/users/{user_id}", response_model=User)
+def remove_user_from_org(org_id: str, user_id: str):
+    return delete_user_from_organization(org_id, user_id)
