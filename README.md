@@ -165,10 +165,12 @@ users, respectively.
 #### Get User
 
 Retrieves information about a specific user.
+URL - `http://localhost:8000/users/{user_id}`
+
 
 **Request**
 
-`GET` - `http://localhost:8000/users/1c4f7361-c8c7-473d-85a3-d2ab76981712`
+`GET` - `http://localhost:8000/users/644614d25e247e93b662c3e1`
 
 **Response**
 
@@ -184,6 +186,7 @@ Retrieves information about a specific user.
 #### Update User
 
 Updates information about a specific user.
+URL - `http://localhost:8000/users/{user_id}`
 
 **Request**
 
@@ -299,6 +302,7 @@ number of organizations to return and the starting index of the returned organiz
 #### Get Organization
 
 Retrieves information about a specific organization.
+URL - `http://localhost:8000/organizations/{org_id}`
 
 **Request**
 
@@ -319,6 +323,7 @@ If the organization does not exist, the API will return an HTTP response with st
 #### Add user to Organization
 
 Adds user to an organization with adding specific access_level
+URL - `http://localhost:8000/organizations/{org_id}/users`
 
 **Request**
 
@@ -344,37 +349,12 @@ In this API call, user collection gets a new column `organization_access`
 example `[{"organizations_id": "64461d19d3ea1afb77b6ac54", "access_level": "read"}]`
 and organization collection gets a new column `users_id` example `["644614d25e247e93b662c3e1"]`.
 
-#### Add user to Organization
-
-Adds user to an organization with adding specific access_level
-
-**Request**
-
-`POST`- `http://localhost:8000/organizations/64461d19d3ea1afb77b6ac54/users?access_level=read&user_id=644614d25e247e93b662c3e1`
-
-**Response**
-
-```
-{
-    "name": "BIBHU PRASAD PALA",
-    "email": "bibhu@123.com",
-    "id": "644614d25e247e93b662c3e1",
-    "organization_access": [
-        {
-            "organizations_id": "64461d19d3ea1afb77b6ac54",
-            "access_level": "read"
-        }
-    ]
-}
-```
-
-In this API call, user collection gets a new column `organization_access`
-example `[{"organizations_id": "64461d19d3ea1afb77b6ac54", "access_level": "read"}]`
-and organization collection gets a new column `users_id` example `["644614d25e247e93b662c3e1"]`.
-
 #### Update user permission to Organization
 
 This API helps to change permission for a user to an organization. If the user is not linked to the org it raises error.
+
+URL - `http://localhost:8000/organizations/{org_id}/users/{user_id}/permissions`
+
 **Request**
 
 `POST`-`http://localhost:8000/organizations/64461d19d3ea1afb77b6ac54/users/644614d25e247e93b662c3e1/permissions?access_level=admin`
@@ -399,6 +379,7 @@ This API helps to change permission for a user to an organization. If the user i
 
 This API helps to deletes permission for a user to an organization. If the user is not linked to the org it raises
 error.
+URL - `http://localhost:8000/organizations/{org_id}/users/{user_id}/permissions`
 
 `DELETE` - `http://localhost:8000/organizations/64461d19d3ea1afb77b6ac54/users/644614d25e247e93b662c3e1/permissions`
 
@@ -416,6 +397,7 @@ error.
 #### Delete user from Organization
 
 This API helps to change permission for a user to a org. If the user is not linked to the org it raises error.
+URL - `http://localhost:8000/organizations/{org_id}/users/{user_id}`
 
 `DELETE` - `http://localhost:8000/organizations/64461d19d3ea1afb77b6ac54/users/644614d25e247e93b662c3e1`
 
